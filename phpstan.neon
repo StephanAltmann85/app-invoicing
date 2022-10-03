@@ -1,0 +1,12 @@
+parameters:
+    level: max
+
+    paths:
+        - %currentWorkingDirectory%
+    excludes_analyse:
+        - %currentWorkingDirectory%/vendor
+
+    ignoreErrors:
+
+    checkMissingIterableValueType: false
+    tipsOfTheDay: false

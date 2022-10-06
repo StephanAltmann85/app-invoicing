@@ -11,6 +11,7 @@
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.13",
+        "easycorp/easyadmin-bundle": "^4.4",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.8",
         "sensio/framework-extra-bundle": "^6.1",
@@ -33,6 +34,7 @@
         "symfony/property-access": "6.1.*",
         "symfony/property-info": "6.1.*",
         "symfony/proxy-manager-bridge": "6.1.*",
+        "symfony/rate-limiter": "6.1.*",
         "symfony/runtime": "6.1.*",
         "symfony/security-bundle": "6.1.*",
         "symfony/serializer": "6.1.*",
@@ -88,7 +90,17 @@
             "@auto-scripts"
         ],
         "phpcs": "vendor/bin/php-cs-fixer fix",
-        "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon src --autoload-file=vendor/autoload.php"
+        "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon --autoload-file=vendor/autoload.php",
+        "db": [
+            "bin/console doctrine:database:drop --force --if-exists",
+            "bin/console doctrine:database:create",
+            "bin/console doctrine:migrations:migrate --no-interaction"
+        ],
+        "fixtures": [
+            "@db",
+            "bin/console doctrine:fixtures:load --no-interaction"
+        ],
+        "test-coverage": "vendor/bin/phpunit -v --coverage-clover clover-coverage.xml --coverage-html coverage_html --log-junit coverage_html/junit.xml"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -100,7 +112,9 @@
         }
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
         "friendsofphp/php-cs-fixer": "^3.11",
+        "nelmio/alice": "^3.12",
         "phpstan/phpstan": "^1.8",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "6.1.*",

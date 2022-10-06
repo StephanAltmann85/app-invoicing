@@ -1,4 +1,7 @@
 /data/
+/.idea
+/coverage_html
+clover-coverage.xml
 
 ###> symfony/framework-bundle ###
 /.env.local

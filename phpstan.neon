@@ -2,9 +2,9 @@ parameters:
     level: max
 
     paths:
-        - %currentWorkingDirectory%
-    excludes_analyse:
-        - %currentWorkingDirectory%/vendor
+        - src/
+        - tests/
+
 
     ignoreErrors:
 

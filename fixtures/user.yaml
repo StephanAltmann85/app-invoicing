@@ -1,0 +1,6 @@
+App\Entity\User:
+  user_1:
+    email: dev@salty.rocks
+    password: '\$2y\$13\$2iqFp34LvjJj1vOzSPBfSe/9hNwqCaWkSOmDsDcL42mgc6TxZRgLa'
+    roles:
+      - ROLE_SUPER_ADMIN

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\CustomerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CustomerRepository::class)]
@@ -15,31 +17,44 @@ class Customer
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    #[ORM\Column(length: 255, nullable: false)]
+    private string $name;
 
-    #[ORM\Column(length: 255)]
-    private ?string $street = null;
+    #[ORM\Column(length: 255, nullable: false)]
+    private string $street;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $additionalAddressLine = null;
 
-    // TODO: check formats of international zipCodes
-    #[ORM\Column(length: 10)]
-    private ?string $zipCode = null;
+    #[ORM\Column(length: 10, nullable: false)]
+    private string $zipCode;
 
-    #[ORM\Column(length: 255)]
-    private ?string $city = null;
+    #[ORM\Column(length: 255, nullable: false)]
+    private string $city;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $country = null;
+
+    #[ORM\OneToOne(mappedBy: 'customerId', cascade: ['persist', 'remove'])]
+    private ?CustomerConfiguration $configuration = null;
+
+    /**
+     * @var Collection<int, Invoice> $invoices
+     */
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Invoice::class)]
+    private Collection $invoices;
+
+    public function __construct()
+    {
+        $this->invoices = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -51,7 +66,7 @@ class Customer
         return $this;
     }
 
-    public function getStreet(): ?string
+    public function getStreet(): string
     {
         return $this->street;
     }
@@ -75,7 +90,7 @@ class Customer
         return $this;
     }
 
-    public function getZipCode(): ?string
+    public function getZipCode(): string
     {
         return $this->zipCode;
     }
@@ -87,7 +102,7 @@ class Customer
         return $this;
     }
 
-    public function getCity(): ?string
+    public function getCity(): string
     {
         return $this->city;
     }
@@ -104,9 +119,55 @@ class Customer
         return $this->country;
     }
 
-    public function setCountry(string $country): self
+    public function setCountry(?string $country): self
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    public function getConfiguration(): ?CustomerConfiguration
+    {
+        return $this->configuration;
+    }
+
+    public function setConfiguration(CustomerConfiguration $configuration): self
+    {
+        if ($configuration->getCustomer() !== $this) {
+            $configuration->setCustomer($this);
+        }
+
+        $this->configuration = $configuration;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Invoice>
+     */
+    public function getInvoices(): Collection
+    {
+        return $this->invoices;
+    }
+
+    public function addInvoice(Invoice $invoice): self
+    {
+        if (!$this->invoices->contains($invoice)) {
+            $this->invoices->add($invoice);
+            $invoice->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoice(Invoice $invoice): self
+    {
+        if ($this->invoices->removeElement($invoice)) {
+            // set the owning side to null (unless already changed)
+            if ($invoice->getCustomer() === $this) {
+                $invoice->setCustomer(null);
+            }
+        }
 
         return $this;
     }

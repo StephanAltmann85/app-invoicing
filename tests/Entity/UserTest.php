@@ -9,13 +9,15 @@ use App\Entity\User;
 class UserTest extends AbstractEntityTest
 {
     /**
-     * @return array<array<null|string>>
+     * @return array<array>
      */
     public function setterGetterProvider(): array
     {
         return [
             ['setEmail', 'getEmail', 'test@test.de'],
+            ['setEmail', 'getUserIdentifier', 'test@test.de'],
             ['setPassword', 'getPassword', '123456'],
+            ['setRoles', 'getRoles', ['ROLE_ADMIN', 'ROLE_SUPER_ADMIN']],
         ];
     }
 

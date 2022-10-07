@@ -12,9 +12,10 @@ abstract class AbstractEntityTest extends TestCase
 
     /**
      * TODO: construct args
+     *
      * @dataProvider setterGetterProvider
      */
-    public function testSetterGetter(string $setter, string $getter, float|int|object|string $value): void
+    public function testSetterGetter(string $setter, string $getter, float|int|object|string|array $value): void
     {
         $entity = (new ($this->getEntityName())())->{$setter}($value);
 
@@ -24,7 +25,7 @@ abstract class AbstractEntityTest extends TestCase
     public function testGetId(): void
     {
         $reflectionClass = new \ReflectionClass($this->getEntityName());
-        $entity = (new ($this->getEntityName())());
+        $entity          = (new ($this->getEntityName())());
 
         $reflectionProperty = $reflectionClass->getProperty('id');
         $reflectionProperty->setAccessible(true);

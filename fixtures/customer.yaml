@@ -1,0 +1,20 @@
+App\Entity\Currency:
+  currency_1:
+    iso3: EUR
+    symbol: '€'
+
+App\Entity\Customer:
+  customer_{1..10}:
+    name: '<company()>'
+    street: '<streetAddress()>'
+    zipCode: '<postcode()>'
+    city: '<city()>'
+
+App\Entity\CustomerConfiguration:
+  customer_configuration_{1..10}:
+    customer: '@customer_<current()>'
+    currency: '@currency_1'
+    locale: 'de'
+    rate: 80000
+    taxRate: 19
+

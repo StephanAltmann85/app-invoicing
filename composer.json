@@ -100,7 +100,7 @@
             "@db",
             "bin/console doctrine:fixtures:load --no-interaction"
         ],
-        "test-coverage": "vendor/bin/phpunit -v --coverage-clover clover-coverage.xml --coverage-html coverage_html --log-junit coverage_html/junit.xml"
+        "test-coverage": "vendor/bin/phpunit -v --coverage-html coverage_html"
     },
     "conflict": {
         "symfony/symfony": "*"

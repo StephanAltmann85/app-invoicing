@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Entity;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\Entity;
 use PHPUnit\Framework\TestCase;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 abstract class AbstractEntityTest extends TestCase
 {
@@ -13,7 +17,7 @@ abstract class AbstractEntityTest extends TestCase
     /**
      * TODO: construct args
      *
-     * @dataProvider setterGetterProvider
+     * @dataProvider provideSetterGetterData
      */
     public function testSetterGetter(string $setter, string $getter, float|int|object|string|array $value): void
     {
@@ -37,7 +41,30 @@ abstract class AbstractEntityTest extends TestCase
         $this->assertEquals(self::DEFAULT_TEST_ID, $id);
     }
 
-    abstract public function setterGetterProvider(): array;
+    public function testRepositoryInstantiation(): void
+    {
+        $registry      = $this->createMock(ManagerRegistry::class);
+        $objectManager = $this->createMock(EntityManagerInterface::class);
+
+        $registry
+            ->expects($this->once())
+            ->method('getManagerForClass')
+            ->willReturn($objectManager);
+
+        $objectManager
+            ->expects($this->once())
+            ->method('getClassMetadata')
+            ->willReturn(new ClassMetadata($this->getEntityName()));
+
+        $reflection      = new \ReflectionClass($this->getEntityName());
+        $repositoryClass = $reflection->getAttributes(Entity::class)[0]->getArguments()['repositoryClass'];
+
+        $repository = new $repositoryClass($registry);
+
+        $this->assertInstanceOf($repositoryClass, $repository);
+    }
+
+    abstract public function provideSetterGetterData(): array;
 
     /**
      * @return class-string

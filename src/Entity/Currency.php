@@ -24,6 +24,12 @@ class Currency
     #[ORM\Column(length: 10, nullable: false)]
     private string $symbol;
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $format = '';
+
+    #[ORM\Column(length: 100, nullable: false)]
+    private int $decimals = 2;
+
     #[ORM\Column]
     private int $symbolAlignment = self::SYMBOL_ALIGNMENT_LEFT;
 
@@ -64,6 +70,30 @@ class Currency
     public function setSymbolAlignment(int $symbolAlignment): self
     {
         $this->symbolAlignment = $symbolAlignment;
+
+        return $this;
+    }
+
+    public function getFormat(): ?string
+    {
+        return $this->format;
+    }
+
+    public function setFormat(?string $format): Currency
+    {
+        $this->format = $format;
+
+        return $this;
+    }
+
+    public function getDecimals(): int
+    {
+        return $this->decimals;
+    }
+
+    public function setDecimals(int $decimals): Currency
+    {
+        $this->decimals = $decimals;
 
         return $this;
     }

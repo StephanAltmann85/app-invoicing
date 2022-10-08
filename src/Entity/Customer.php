@@ -35,8 +35,18 @@ class Customer
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $country = null;
 
-    #[ORM\OneToOne(mappedBy: 'customerId', cascade: ['persist', 'remove'])]
-    private ?CustomerConfiguration $configuration = null;
+    #[ORM\Column(length: 2, nullable: false)]
+    private string $locale;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private Currency $currency;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $rate = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $taxRate = null;
 
     /**
      * @var Collection<int, Invoice> $invoices
@@ -126,18 +136,50 @@ class Customer
         return $this;
     }
 
-    public function getConfiguration(): ?CustomerConfiguration
+    public function getLocale(): string
     {
-        return $this->configuration;
+        return $this->locale;
     }
 
-    public function setConfiguration(CustomerConfiguration $configuration): self
+    public function setLocale(string $locale): Customer
     {
-        if ($configuration->getCustomer() !== $this) {
-            $configuration->setCustomer($this);
-        }
+        $this->locale = $locale;
 
-        $this->configuration = $configuration;
+        return $this;
+    }
+
+    public function getCurrency(): Currency
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(Currency $currency): Customer
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    public function getRate(): ?int
+    {
+        return $this->rate;
+    }
+
+    public function setRate(?int $rate): Customer
+    {
+        $this->rate = $rate;
+
+        return $this;
+    }
+
+    public function getTaxRate(): ?float
+    {
+        return $this->taxRate;
+    }
+
+    public function setTaxRate(?float $taxRate): Customer
+    {
+        $this->taxRate = $taxRate;
 
         return $this;
     }

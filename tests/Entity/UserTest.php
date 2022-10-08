@@ -11,7 +11,7 @@ class UserTest extends AbstractEntityTest
     /**
      * @return array<array>
      */
-    public function setterGetterProvider(): array
+    public function provideSetterGetterData(): array
     {
         return [
             ['setEmail', 'getEmail', 'test@test.de'],

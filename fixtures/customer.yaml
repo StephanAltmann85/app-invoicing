@@ -11,6 +11,6 @@ App\Entity\Customer:
     city: '<city()>'
     currency: '@currency_1'
     locale: 'de'
-    rate: 80000
+    defaultRate: 80000
     taxRate: 19
 

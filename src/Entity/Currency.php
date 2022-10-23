@@ -33,6 +33,11 @@ class Currency
     #[ORM\Column]
     private int $symbolAlignment = self::SYMBOL_ALIGNMENT_LEFT;
 
+    public function __toString(): string
+    {
+        return $this->iso3;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

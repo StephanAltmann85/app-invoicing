@@ -43,7 +43,7 @@ class Customer
     private Currency $currency;
 
     #[ORM\Column(nullable: true)]
-    private ?int $rate = null;
+    private ?int $defaultRate = null;
 
     #[ORM\Column(nullable: true)]
     private ?float $taxRate = null;
@@ -57,6 +57,11 @@ class Customer
     public function __construct()
     {
         $this->invoices = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 
     public function getId(): ?int
@@ -160,14 +165,14 @@ class Customer
         return $this;
     }
 
-    public function getRate(): ?int
+    public function getDefaultRate(): ?int
     {
-        return $this->rate;
+        return $this->defaultRate;
     }
 
-    public function setRate(?int $rate): Customer
+    public function setDefaultRate(?int $defaultRate): Customer
     {
-        $this->rate = $rate;
+        $this->defaultRate = $defaultRate;
 
         return $this;
     }

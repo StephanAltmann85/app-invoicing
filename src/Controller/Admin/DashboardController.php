@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Entity\Currency;
 use App\Entity\Customer;
+use App\Entity\Invoice;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -23,6 +25,7 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             // TODO: set values
+            // TODO: add translations everywhere
             ->setTitle('ACME Corp.')
             ->setTitle('<img src="..."> ACME <span class="text-small">Corp.</span>')
             ->setFaviconPath('favicon.svg')
@@ -46,6 +49,14 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
 
+        yield MenuItem::linkToCrud('New invoice', 'fas fa-receipt', Invoice::class);
+
+        yield MenuItem::section('Settings');
+
+        // TODO: general settings
         yield MenuItem::linkToCrud('Customer', 'fas fa-phone', Customer::class);
+
+        yield MenuItem::linkToCrud('Currency', 'fas fa-euro-sign', Currency::class);
+        // TODO: assignable invoice template
     }
 }

@@ -8,8 +8,10 @@ use App\Repository\InvoiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
+#[UniqueEntity('number')]
 class Invoice
 {
     #[ORM\Id]
@@ -17,7 +19,8 @@ class Invoice
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: false)]
+    // TODO: has to be unique
+    #[ORM\Column(length: 255, nullable: false, unique: true)]
     private string $number;
 
     #[ORM\ManyToOne(inversedBy: 'invoices')]

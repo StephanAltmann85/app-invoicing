@@ -31,7 +31,7 @@ class CustomerCrudController extends AbstractCrudController
             FormField::addPanel('Settings'),
             // TODO: help text
             TextField::new('locale'),
-            // AssociationField::new('currency')
+            AssociationField::new('currency'),
         ];
     }
 }

@@ -22,10 +22,16 @@ class InvoicePosition
     private string $description;
 
     #[ORM\Column(nullable: false)]
-    private int $quantity = 1;
+    private float $quantity = 1;
 
     #[ORM\Column(nullable: false)]
     private int $rate;
+
+    public function __toString(): string
+    {
+        //TODO: constants for format
+        return sprintf('%s (%.02f)', $this->description, $this->quantity, 2);
+    }
 
     public function getId(): ?int
     {
@@ -56,12 +62,12 @@ class InvoicePosition
         return $this;
     }
 
-    public function getQuantity(): int
+    public function getQuantity(): float
     {
         return $this->quantity;
     }
 
-    public function setQuantity(int $quantity): self
+    public function setQuantity(float $quantity): self
     {
         $this->quantity = $quantity;
 

@@ -6,6 +6,7 @@ namespace App\Form;
 
 use App\Entity\InvoicePosition;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,9 +16,9 @@ class InvoicePositionType extends AbstractType
     {
         $builder
             ->add('description')
-            ->add('quantity')
-            ->add('rate')
-            ->add('invoice');
+            ->add('quantity', NumberType::class, ['scale' => 2])
+            // TODO: set customer's default rate
+            ->add('rate');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

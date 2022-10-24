@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[UniqueEntity('number')]
 class Invoice
 {
@@ -19,9 +20,13 @@ class Invoice
     #[ORM\Column]
     private ?int $id = null;
 
-    // TODO: has to be unique
-    #[ORM\Column(length: 255, nullable: false, unique: true)]
-    private string $number;
+    // TODO: set on invoice render, incrementor
+    #[ORM\Column(length: 255, nullable: true, unique: true)]
+    private ?string $number;
+
+    // TODO: set on invoice render
+    #[ORM\Column(length: 255, nullable: true, unique: true)]
+    private ?string $documentFile;
 
     #[ORM\ManyToOne(inversedBy: 'invoices')]
     #[ORM\JoinColumn(nullable: false)]
@@ -30,10 +35,13 @@ class Invoice
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $documentCreatedAt = null;
+
     /**
      * @var Collection<int,InvoicePosition>
      */
-    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoicePosition::class)]
+    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoicePosition::class, cascade: ['persist'])]
     private Collection $invoicePositions;
 
     public function __construct()
@@ -46,7 +54,7 @@ class Invoice
         return $this->id;
     }
 
-    public function getNumber(): string
+    public function getNumber(): ?string
     {
         return $this->number;
     }
@@ -54,6 +62,18 @@ class Invoice
     public function setNumber(string $number): self
     {
         $this->number = $number;
+
+        return $this;
+    }
+
+    public function getDocumentFile(): ?string
+    {
+        return $this->documentFile;
+    }
+
+    public function setDocumentFile(string $documentFile): Invoice
+    {
+        $this->documentFile = $documentFile;
 
         return $this;
     }
@@ -75,9 +95,14 @@ class Invoice
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function getDocumentCreatedAt(): ?\DateTimeImmutable
     {
-        $this->createdAt = $createdAt;
+        return $this->documentCreatedAt;
+    }
+
+    public function setDocumentCreatedAt(?\DateTimeImmutable $documentCreatedAt): Invoice
+    {
+        $this->documentCreatedAt = $documentCreatedAt;
 
         return $this;
     }
@@ -110,5 +135,11 @@ class Invoice
         }
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
     }
 }

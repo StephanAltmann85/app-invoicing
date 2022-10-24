@@ -12,7 +12,8 @@ use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 abstract class AbstractEntityTest extends TestCase
 {
-    protected const DEFAULT_TEST_ID = 100;
+    protected const DEFAULT_TEST_ID   = 100;
+    protected const DEFAULT_TEST_DATE = '24.12.2022';
 
     /**
      * TODO: construct args

@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Tests\Entity;
 
 use App\Entity\Currency;
+use App\Tests\Entity\Trait\ToStringTrait;
 
 class CurrencyTest extends AbstractEntityTest
 {
+    use ToStringTrait;
+
     /**
      * @return array<array>
      */
@@ -25,5 +28,15 @@ class CurrencyTest extends AbstractEntityTest
     protected function getEntityName(): string
     {
         return Currency::class;
+    }
+
+    public function stringifyEntityValues(): array
+    {
+        return [
+            'expected' => 'TEST',
+            'setter' => [
+                'setIso3' => 'TEST'
+            ]
+        ];
     }
 }

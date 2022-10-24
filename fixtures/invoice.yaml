@@ -1,0 +1,40 @@
+App\Entity\Currency:
+  currency_1:
+    iso3: EUR
+    symbol: '€'
+
+App\Entity\Customer:
+  customer_{1..10}:
+    name: '<company()>'
+    street: '<streetAddress()>'
+    zipCode: '<postcode()>'
+    city: '<city()>'
+    currency: '@currency_1'
+    locale: 'de'
+    defaultRate: 80000
+    taxRate: 19
+
+App\Entity\InvoicePosition:
+  position_1:
+    description: 'Position 1'
+    quantity: 2.25
+    rate: 80
+  position_2:
+    description: 'Position 1'
+    quantity: 2.25
+    rate: 80
+  position_3:
+    description: 'Position 2'
+    quantity: 2.25
+    rate: 80
+
+App\Entity\Invoice:
+  invoice_1:
+    customer: '@customer_1'
+    invoicePositions: ['@position_1']
+  invoice_2:
+    number: '2022-0001'
+    documentFile: '2022-0001.pdf'
+    customer: '@customer_1'
+    invoicePositions: ['@position_2','@position_3']
+    documentCreatedAt: <(new DateTimeImmutable())>

@@ -1,30 +1,53 @@
-on: [push]
-name: Behat
+name: Testing Symfony with MySQL
+on: [push, pull_request]
 jobs:
-  Test:
+  symfony:
+    name: Symfony (PHP ${{ matrix.php-versions }})
     runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: false
+          MYSQL_ROOT_PASSWORD: symfony
+          MYSQL_DATABASE: symfony
+        ports:
+          - 3306/tcp
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
-      - uses: actions/checkout@v1
-      - uses: shivammathur/setup-php@v2
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
           php-version: '8.1'
-          tools: pecl
-          extensions: gd, mbstring, intl, amqp
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, mysql
           coverage: xdebug
 
       - name: Get composer cache directory
         id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
-      - name: Cache dependencies
-        uses: actions/cache@v1
+      - name: Cache composer dependencies
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-scripts
+      - name: Install Composer dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Run Migration
+        run: |
+          composer require --dev symfony/orm-pack
+          php bin/console doctrine:schema:update --force || echo "No migrations found or schema update failed"
+          php bin/console doctrine:migrations:migrate || echo "No migrations found or migration failed"
+        env:
+          DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony
 
       - name: Test
         run: |

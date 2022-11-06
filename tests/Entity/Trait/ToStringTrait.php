@@ -6,12 +6,13 @@ namespace App\Tests\Entity\Trait;
 
 trait ToStringTrait
 {
-    public function testToString() :void {
+    public function testToString(): void
+    {
         $entity = (new ($this->getEntityName())());
 
         $data = $this->stringifyEntityValues();
 
-        foreach($data['setter'] as $setter => $value) {
+        foreach ($data['setter'] as $setter => $value) {
             $entity->$setter($value);
         }
 

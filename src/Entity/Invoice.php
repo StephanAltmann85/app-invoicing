@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\InvoiceRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,11 +22,11 @@ class Invoice
     private ?int $id = null;
 
     // TODO: set on invoice render, incrementor
-    #[ORM\Column(length: 255, nullable: true, unique: true)]
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
     private ?string $number;
 
     // TODO: set on invoice render
-    #[ORM\Column(length: 255, nullable: true, unique: true)]
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
     private ?string $documentFile;
 
     #[ORM\ManyToOne(inversedBy: 'invoices')]
@@ -33,10 +34,10 @@ class Invoice
     private ?Customer $customer = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $documentCreatedAt = null;
+    private ?DateTimeImmutable $documentCreatedAt = null;
 
     /**
      * @var Collection<int,InvoicePosition>
@@ -90,17 +91,17 @@ class Invoice
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function getDocumentCreatedAt(): ?\DateTimeImmutable
+    public function getDocumentCreatedAt(): ?DateTimeImmutable
     {
         return $this->documentCreatedAt;
     }
 
-    public function setDocumentCreatedAt(?\DateTimeImmutable $documentCreatedAt): Invoice
+    public function setDocumentCreatedAt(?DateTimeImmutable $documentCreatedAt): Invoice
     {
         $this->documentCreatedAt = $documentCreatedAt;
 
@@ -140,6 +141,6 @@ class Invoice
     #[ORM\PrePersist]
     public function setCreatedAtValue(): void
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
     }
 }

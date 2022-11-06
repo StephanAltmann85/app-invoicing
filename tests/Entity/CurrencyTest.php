@@ -25,18 +25,18 @@ class CurrencyTest extends AbstractEntityTest
         ];
     }
 
-    protected function getEntityName(): string
-    {
-        return Currency::class;
-    }
-
     public function stringifyEntityValues(): array
     {
         return [
             'expected' => 'TEST',
-            'setter' => [
-                'setIso3' => 'TEST'
-            ]
+            'setter'   => [
+                'setIso3' => 'TEST',
+            ],
         ];
+    }
+
+    protected function getEntityName(): string
+    {
+        return Currency::class;
     }
 }

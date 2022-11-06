@@ -41,18 +41,18 @@ class CustomerTest extends AbstractEntityTest
         ];
     }
 
-    protected function getEntityName(): string
-    {
-        return Customer::class;
-    }
-
     public function stringifyEntityValues(): array
     {
         return [
             'expected' => 'TEST',
-            'setter' => [
-                'setName' => 'TEST'
-            ]
+            'setter'   => [
+                'setName' => 'TEST',
+            ],
         ];
+    }
+
+    protected function getEntityName(): string
+    {
+        return Customer::class;
     }
 }

@@ -29,8 +29,8 @@ class InvoicePosition
 
     public function __toString(): string
     {
-        //TODO: constants for format
-        return sprintf('%s (%.02f)', $this->description, $this->quantity, 2);
+        // TODO: constants for format, decimals
+        return sprintf('%s (%.02f)', $this->description, $this->quantity);
     }
 
     public function getId(): ?int

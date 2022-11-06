@@ -4,21 +4,27 @@ declare(strict_types=1);
 
 namespace App\Tests\Entity\Trait;
 
+use DateTimeImmutable;
+use ReflectionClass;
+use ReflectionException;
+
 trait CreatedAtTrait
 {
+    /**
+     * @throws ReflectionException
+     */
     public function testGetCreatedAt(): void
     {
-        $reflectionClass = new \ReflectionClass($this->getEntityName());
+        $reflectionClass = new ReflectionClass($this->getEntityName());
         $entity          = (new ($this->getEntityName())());
 
         $reflectionProperty = $reflectionClass->getProperty('createdAt');
-        $reflectionProperty->setAccessible(true);
-        $reflectionProperty->setValue($entity, new \DateTimeImmutable(self::DEFAULT_TEST_DATE));
+        $reflectionProperty->setValue($entity, new DateTimeImmutable(self::DEFAULT_TEST_DATE));
 
         /** @phpstan-ignore-next-line */
         $createdAt = $entity->getCreatedAt();
 
-        $this->assertEquals(new \DateTimeImmutable(self::DEFAULT_TEST_DATE), $createdAt);
+        $this->assertEquals(new DateTimeImmutable(self::DEFAULT_TEST_DATE), $createdAt);
     }
 
     public function testsetCreatedAtValue(): void

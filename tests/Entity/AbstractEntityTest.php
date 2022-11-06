@@ -8,6 +8,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\Entity;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use ReflectionException;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 abstract class AbstractEntityTest extends TestCase
@@ -27,13 +29,15 @@ abstract class AbstractEntityTest extends TestCase
         $this->assertEquals($value, $entity->{$getter}());
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public function testGetId(): void
     {
-        $reflectionClass = new \ReflectionClass($this->getEntityName());
+        $reflectionClass = new ReflectionClass($this->getEntityName());
         $entity          = (new ($this->getEntityName())());
 
         $reflectionProperty = $reflectionClass->getProperty('id');
-        $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($entity, self::DEFAULT_TEST_ID);
 
         /** @phpstan-ignore-next-line */
@@ -42,6 +46,9 @@ abstract class AbstractEntityTest extends TestCase
         $this->assertEquals(self::DEFAULT_TEST_ID, $id);
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public function testRepositoryInstantiation(): void
     {
         $registry      = $this->createMock(ManagerRegistry::class);
@@ -57,7 +64,7 @@ abstract class AbstractEntityTest extends TestCase
             ->method('getClassMetadata')
             ->willReturn(new ClassMetadata($this->getEntityName()));
 
-        $reflection      = new \ReflectionClass($this->getEntityName());
+        $reflection      = new ReflectionClass($this->getEntityName());
         $repositoryClass = $reflection->getAttributes(Entity::class)[0]->getArguments()['repositoryClass'];
 
         $repository = new $repositoryClass($registry);

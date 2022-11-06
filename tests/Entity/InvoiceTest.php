@@ -9,6 +9,7 @@ use App\Entity\Invoice;
 use App\Entity\InvoicePosition;
 use App\Tests\Entity\Trait\AssociationTrait;
 use App\Tests\Entity\Trait\CreatedAtTrait;
+use DateTimeImmutable;
 
 class InvoiceTest extends AbstractEntityTest
 {
@@ -24,7 +25,7 @@ class InvoiceTest extends AbstractEntityTest
             ['setNumber', 'getNumber', '2022-0001'],
             ['setDocumentFile', 'getDocumentFile', '2022-0001.pdf'],
             ['setCustomer', 'getCustomer', new Customer()],
-            ['setDocumentCreatedAt', 'getDocumentCreatedAt', new \DateTimeImmutable()],
+            ['setDocumentCreatedAt', 'getDocumentCreatedAt', new DateTimeImmutable()],
         ];
     }
 

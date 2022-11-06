@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Entity;
 
-use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Entity\InvoicePosition;
-use App\Tests\Entity\Trait\AssociationTrait;
-use App\Tests\Entity\Trait\CreatedAtTrait;
 use App\Tests\Entity\Trait\ToStringTrait;
 
 class InvoicePositionTest extends AbstractEntityTest
@@ -35,19 +32,19 @@ class InvoicePositionTest extends AbstractEntityTest
         ];
     }
 
-    protected function getEntityName(): string
-    {
-        return InvoicePosition::class;
-    }
-
     public function stringifyEntityValues(): array
     {
         return [
             'expected' => 'TEST (2.25)',
-            'setter' => [
+            'setter'   => [
                 'setDescription' => 'TEST',
-                'setQuantity' => 2.25
-            ]
+                'setQuantity'    => 2.25,
+            ],
         ];
+    }
+
+    protected function getEntityName(): string
+    {
+        return InvoicePosition::class;
     }
 }

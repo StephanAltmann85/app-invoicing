@@ -29,3 +29,4 @@ jobs:
       - name: PHPUnit
         run: |
           vendor/bin/phpunit -v --coverage-clover clover-coverage.xml --coverage-html coverage_html --log-junit coverage_html/junit.xml
+          

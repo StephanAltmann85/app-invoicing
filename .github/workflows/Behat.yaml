@@ -5,9 +5,6 @@ jobs:
     name: Behat
     runs-on: ubuntu-latest
 
-    env:
-      DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony
-
     services:
       mysql:
         image: mysql:latest
@@ -49,8 +46,11 @@ jobs:
           composer require --dev symfony/orm-pack
           php bin/console doctrine:schema:update --force || echo "No migrations found or schema update failed"
           php bin/console doctrine:migrations:migrate || echo "No migrations found or migration failed"
+        env:
+          DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony
 
       - name: Test
         run: |
           APP_ENV=test php vendor/bin/behat
-          
+        env:
+          DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony

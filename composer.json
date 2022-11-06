@@ -118,6 +118,7 @@
         "behat/mink-selenium2-driver": "^1.6",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "dvdoug/behat-code-coverage": "^5.2",
+        "friends-of-behat/mink-extension": "^2.7",
         "friends-of-behat/symfony-extension": "^2.3",
         "friendsofphp/php-cs-fixer": "^3.11",
         "nelmio/alice": "^3.12",

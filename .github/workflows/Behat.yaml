@@ -48,6 +48,7 @@ jobs:
           bin/console doctrine:database:create
           bin/console doctrine:migrations:migrate --no-interaction
           bin/console doctrine:fixtures:load --no-interaction
+          php vendor/bin/behat
         env:
           DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony
 

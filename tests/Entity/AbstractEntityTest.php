@@ -8,8 +8,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\Entity;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
-use ReflectionException;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 abstract class AbstractEntityTest extends TestCase
@@ -30,11 +28,11 @@ abstract class AbstractEntityTest extends TestCase
     }
 
     /**
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function testGetId(): void
     {
-        $reflectionClass = new ReflectionClass($this->getEntityName());
+        $reflectionClass = new \ReflectionClass($this->getEntityName());
         $entity          = (new ($this->getEntityName())());
 
         $reflectionProperty = $reflectionClass->getProperty('id');
@@ -47,7 +45,7 @@ abstract class AbstractEntityTest extends TestCase
     }
 
     /**
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function testRepositoryInstantiation(): void
     {
@@ -64,7 +62,7 @@ abstract class AbstractEntityTest extends TestCase
             ->method('getClassMetadata')
             ->willReturn(new ClassMetadata($this->getEntityName()));
 
-        $reflection      = new ReflectionClass($this->getEntityName());
+        $reflection      = new \ReflectionClass($this->getEntityName());
         $repositoryClass = $reflection->getAttributes(Entity::class)[0]->getArguments()['repositoryClass'];
 
         $repository = new $repositoryClass($registry);

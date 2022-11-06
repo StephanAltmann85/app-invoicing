@@ -5,6 +5,9 @@ jobs:
     name: Behat
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony
+
     services:
       mysql:
         image: mysql:latest
@@ -26,8 +29,6 @@ jobs:
           php-version: '8.1'
           extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, mysql
           coverage: xdebug
-        env:
-          DATABASE_URL: ""
 
       - name: Get composer cache directory
         id: composer-cache
@@ -48,8 +49,6 @@ jobs:
           composer require --dev symfony/orm-pack
           php bin/console doctrine:schema:update --force || echo "No migrations found or schema update failed"
           php bin/console doctrine:migrations:migrate || echo "No migrations found or migration failed"
-        env:
-          DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony
 
       - name: Test
         run: |

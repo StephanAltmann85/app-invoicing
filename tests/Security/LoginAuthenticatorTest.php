@@ -7,8 +7,6 @@ namespace App\Tests\Security;
 use App\Security\LoginAuthenticator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
-use ReflectionException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -80,7 +78,7 @@ class LoginAuthenticatorTest extends TestCase
     }
 
     /**
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function testGetLoginUrl(): void
     {
@@ -90,7 +88,7 @@ class LoginAuthenticatorTest extends TestCase
             ->with(LoginAuthenticator::LOGIN_ROUTE)
             ->willReturn('/login');
 
-        $reflectionClass  = new ReflectionClass($this->authenticator);
+        $reflectionClass  = new \ReflectionClass($this->authenticator);
         $reflectionMethod = $reflectionClass->getMethod('getLoginUrl');
 
         $loginUrl = $reflectionMethod->invokeArgs($this->authenticator, [$this->request]);

@@ -1,0 +1,19 @@
+default:
+    suites:
+        default:
+          contexts:
+            - App\Tests\Behat\DemoContext
+
+    extensions:
+        FriendsOfBehat\SymfonyExtension: null
+        DVDoug\Behat\CodeCoverage\Extension:
+            filter:
+                include:
+                    directories:
+                        'src': ~
+                exclude:
+                    directories:
+                        'src/Kernel.php': ~
+            reports:
+                html:
+                    target: coverage_behat_html

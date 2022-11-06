@@ -1,8 +1,8 @@
-name: Testing Symfony with MySQL
+name: Behat
 on: [push, pull_request]
 jobs:
-  symfony:
-    name: Symfony (PHP ${{ matrix.php-versions }})
+  behat:
+    name: Behat
     runs-on: ubuntu-latest
 
     services:
@@ -26,6 +26,8 @@ jobs:
           php-version: '8.1'
           extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, mysql
           coverage: xdebug
+        env:
+          DATABASE_URL: ""
 
       - name: Get composer cache directory
         id: composer-cache
